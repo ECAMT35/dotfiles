@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+
+<!--
+  This is a very simple config file with many options missing. For a complete
+  set of options with comments, see docs/rc.xml.all
+-->
+
+<labwc_config>
+
+  <theme>
+    <name></name>
+    <cornerRadius>8</cornerRadius>
+    <font name="sans" size="10" />
+  </theme>
+
+  <desktops>
+    <!--
+	popupTime defaults to 1000 so could be left out.
+	Set to 0 to completely disable the workspace OSD.
+    -->	
+    <popupTime>1000</popupTime>
+    <names>
+      <name>Home</name>
+      <name>WorkSpace</name>
+      <name>Web</name>
+      <name>Term</name>
+      <name>Game</name>
+    </names>
+  </desktops>
+
+
+  <keyboard>
+    <default />
+    <!-- Use a different terminal emulator -->
+    <keybind key="W-Return">
+      <action name="Execute" command="foot" />
+    </keybind>
+
+    <keybind key="W-q">
+      <action name="Close" />
+    </keybind>
+
+
+    <!-- application -->
+
+    <keybind key="A-y">
+      <action name="Execute" command="foot -e yazi" />
+    </keybind>
+
+    <keybind key="A-a">
+      <action name="Execute" command="wofi --show drun" />
+    </keybind>
+
+    <keybind key="W-l">
+      <action name="Execute" command="swaylock" />
+    </keybind>
+
+    <!-- screenshot -->
+    <keybind key="S-W-p">
+      <action name="Execute">
+        <command>sh -c 'grim -g "`slurp`" - | wl-copy'</command>
+      </action>
+    </keybind>
+    <keybind key="S-W-F11">
+      <action name="Execute">
+        <command>sh -c 'grim -g "`slurp`" -l 9 ~/Pictures/Screenshot/`date +"%Y%m%d%H%M%S"`.png'</command>
+      </action>
+    </keybind>
+
+    <!-- cliphist -->
+    <keybind key="C-;">
+      <action name="Execute">
+        <command>sh -c "cliphist list | wofi -d | cliphist decode | wl-copy"</command>
+      </action>
+    </keybind>
+    <keybind key="C-;-w">
+      <action name="Execute">
+        <command>cliphist wipe</command>
+      </action>
+    </keybind>
+
+    <!-- system -->
+    <keybind key="W-[">
+      <action name="PreviousWindow" />
+    </keybind>
+    <keybind key="W-]">
+      <action name="NextWindow" />
+    </keybind>
+
+    <keybind key="S-W-a">
+      <action name="GoToDesktop" to="left" />
+    </keybind>
+    <keybind key="S-W-s">
+      <action name="GoToDesktop" to="right" />
+    </keybind>
+
+    <keybind key="XF86_MonBrightnessUp">
+      <action name="Execute" command="brightnessctl set +5%" />
+    </keybind>
+    <keybind key="XF86_MonBrightnessDown">
+      <action name="Execute" command="brightnessctl set 5%-" />
+    </keybind>
+
+    <!--
+    <keybind key="XF86_AudioLowerVolume">
+      <action name="Execute" command="wpctl set-volume @DEFAULT_SINK@ 5%-" />
+    </keybind>
+    <keybind key="XF86_AudioRaiseVolume">
+      <action name="Execute" command="wpctl set-volume @DEFAULT_SINK@ 5%+" />
+    </keybind>
+    <keybind key="XF86_AudioMute">
+      <action name="Execute" command="wpctl set-mute @DEFAULT_SINK@ toggle" />
+    </keybind>
+    -->
+
+  </keyboard>
+
+  <mouse>
+    <default />
+    <!-- Show a custom menu on desktop right click -->
+    <context name="Root">
+      <mousebind button="Right" action="Press">
+        <action name="ShowMenu" menu="some-custom-menu" />
+      </mousebind>
+    </context>
+  </mouse>
+
+</labwc_config>

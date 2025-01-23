@@ -1,0 +1,58 @@
+@define-color bg rgba(210,210,210,0.99);
+@define-color input_bg #f2f2f2;
+@define-color entry_bg #8c8c8c;
+@define-color text_color #000000;
+
+* {
+  background: transparent;
+}
+
+#window {
+  background: @bg;
+  padding: 10px;
+  border-radius: 8px;
+  animation: slideIn 0.3s ease-in-out both;
+}
+
+#input {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background-color: @input_bg;
+}
+
+#outer-box {
+  padding: 20px;
+}
+
+#img {
+  margin-right: 6px;
+}
+
+
+#entry {
+  padding: 10px;
+  border-radius: 8px;
+}
+
+#entry:selected {
+  background-color: @entry_bg;
+}
+
+#entry:selected #text {
+  color: @bg;
+}
+
+#text {
+  margin: 2px;
+  color: @text_color
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+ }
