@@ -1,0 +1,47 @@
+# Swayimg configuration file.
+# vim: filetype=dosini
+
+# This file contains the default configuration.
+# The viewer searches for the config file in the following locations:
+# 1. $XDG_CONFIG_HOME/swayimg/config
+# 2. $HOME/.config/swayimg/config
+# 3. $XDG_CONFIG_DIRS/swayimg/config
+# 4. /etc/xdg/swayimg/config
+
+# Any of these options can be overridden using the --config argument
+# on the command line, for instance:
+# $ swayimg --config="general.mode=gallery"
+
+################################################################################
+# General configuration
+################################################################################
+[general]
+# Window size (fullscreen/parent/image, or absolute size, e.g. 800,600)
+size = fullscreen
+
+[viewer]
+# Fix position of the image on the window surface (yes/no)
+fixed = no
+# Anti-aliasing mode (none/box/bilinear/bicubic/mks13)
+antialiasing = none
+history = 5
+
+[gallery]
+# Size of the thumbnail (pixels)
+size = 400
+# Anti-aliasing mode for thumbnails (none/box/bilinear/bicubic/mks13)
+antialiasing = mks13
+
+
+[font]
+# Font name
+name = monospace
+# Font size (pt)
+size = 22
+# Font color (RGBA)
+color = #000000ff
+# Shadow color (RGBA)
+shadow = #000000ff
+# Background color (RGBA)
+background = #80808080
+
