@@ -8,7 +8,8 @@
     // Choose the order of the modules
     "modules-left": [
 	"cpu",
-        "memory"
+        "memory",
+	"custom/scale"
     ],
     //"modules-center": [
 
@@ -106,4 +107,11 @@
         //"on-click": "pavucontrol"
     },
 
+    "custom/scale": {
+        "format": "󱣴",
+        "tooltip": false,
+        "on-click": "wlr-randr --output $(wlr-randr | head -n 1 |cut -d' ' -f1) --scale 1",
+        "on-click-right": "wlr-randr --output $(wlr-randr | head -n 1 |cut -d' ' -f1) --scale 1.5",
+        "interval": 0
+  }
 }
