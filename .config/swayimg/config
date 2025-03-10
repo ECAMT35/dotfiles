@@ -23,7 +23,7 @@ size = fullscreen
 # Fix position of the image on the window surface (yes/no)
 fixed = no
 # Anti-aliasing mode (none/box/bilinear/bicubic/mks13)
-antialiasing = none
+antialiasing = mks13
 history = 5
 
 [gallery]
