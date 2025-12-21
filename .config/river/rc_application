@@ -8,7 +8,7 @@ riverctl map normal Alt Y spawn "foot -e yazi"
 
 riverctl map normal Alt A spawn "wofi --show drun"
 
-riverctl map normal Super L spawn swaylock
+riverctl map normal Super+Shift L spawn swaylock
 
 riverctl map normal Super+Shift P spawn 'grim -g "`slurp`" - | wl-copy'
 
