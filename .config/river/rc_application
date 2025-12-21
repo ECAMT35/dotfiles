@@ -1,0 +1,21 @@
+#!/bin/sh
+# @author ECAMT
+
+
+# Note: the "Super" modifier is also known as Logo, GUI, Windows, Mod4, etc.
+
+riverctl map normal Alt Y spawn "foot -e yazi"
+
+riverctl map normal Alt A spawn "wofi --show drun"
+
+riverctl map normal Super L spawn swaylock
+
+riverctl map normal Super+Shift P spawn 'grim -g "`slurp`" - | wl-copy'
+
+riverctl map normal Super+Shift F11 spawn 'grim -g "`slurp`" -l 9 ~/Pictures/Screenshot/`date +"%Y%m%d%H%M%S"`.png'
+
+riverctl map normal Control Semicolon spawn "cliphist list | wofi -d | cliphist decode | wl-copy" 
+
+riverctl map normal Control+Shift Semicolon spawn "cliphist wipe" 
+
+
