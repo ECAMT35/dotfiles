@@ -1,0 +1,18 @@
+#!/bin/sh
+# @author ECAMT
+
+${HOME}/.config/dam/init | dam >/dev/null 2>&1 &
+
+wlr-randr --output $(wlr-randr | head -n 1 |cut -d' ' -f1) --scale 1.5 &
+
+swaybg -i $HOME/Pictures/Wallpaper/desktop.png -m fill >/dev/null 2>&1 &
+
+swayidle -w \
+    timeout 600 'swaylock -f' \
+    timeout 900 'wlopm --off \*' \
+    resume 'wlopm --on \*' \
+    before-sleep 'swaylock -f -c 000000' >/dev/null 2>&1 &
+
+fcitx5 -d
+
+wl-paste --watch cliphist store &
