@@ -1,0 +1,9 @@
+#!/bin/sh
+if wpctl get-volume @DEFAULT_SINK@ | grep -q '\[MUTED\]'; then
+    wpctl set-mute @DEFAULT_SINK@ 0
+else
+    wpctl set-mute @DEFAULT_SINK@ 1
+fi
+
+[ -f "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/damblocks.pid" ] && \
+kill -36 "$(cat "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/damblocks.pid")" 2>/dev/null
