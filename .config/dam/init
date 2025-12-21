@@ -1,0 +1,226 @@
+#!/bin/sh
+# @author ECAMT
+
+# Some function's reloading depends on my personal scripts (~/.local/bin/)
+
+#set -x
+# INI
+printf "$$" > "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/damblocks.pid"
+sec=0
+
+# MODULES
+update_time() {
+    time="$(LC_TIME=en_US.UTF-8 date '+%b-%d %a %H:%M:%S')"
+}
+
+update_bluetooth() {
+    local icon="󰂯"
+    if ! pgrep -x 'bluetoothd' >/dev/null 2>&1; then
+        icon="󰂲"
+    else
+        local level="$(bluetoothctl info 2>/dev/null | grep -m1 'Battery Percentage' | awk -F'[()]' '{print $2}')"
+	[ -n "$level" ] && { icon="󰂱"; level="$level%"; }
+    fi
+    bluetooth="${icon}${level}"
+}
+
+update_battery () {
+    local icon=""
+    local POWER="/sys/class/power_supply"
+    local status="$(cat $POWER/BAT?/status 2>/dev/null | head -1)"
+    local level="$(cat $POWER/BAT?/capacity 2>/dev/null | head -1)"
+    case "$status" in
+        "Discharging")
+            case "$level" in
+                [0-5]) icon="󰂎";;
+                [6-9]) icon="󰁺";;
+                1[0-9]) icon="󰁻";;
+                2[0-9]) icon="󰁼";;
+                3[0-9]) icon="󰁽";;
+                4[0-9]) icon="󰁽";;
+                5[0-9]) icon="󰁾";;
+                6[0-9]) icon="󰁿";;
+                7[0-9]) icon="󰂀";;
+                8[0-9]) icon="󰂁";;
+                9[0-9]) icon="󰂂";;
+                100)    icon="󰁹";;
+            esac
+            level="${level}%"
+            ;;
+        "Not charging"|"Full")
+            icon="" level="${level}%"
+            ;;
+        "Charging")
+            icon="" level="${level}%"
+            ;;
+    esac
+    ls ${POWER}/BAT? > /dev/null 2>&1 || icon=""
+    battery="${icon}${level}"
+}
+
+update_volume() {
+    local vol_info=$(wpctl get-volume @DEFAULT_SINK@ 2>/dev/null)
+    local icon=""
+    local level=""
+    if echo "$vol_info" | grep -q '\[MUTED\]'; then
+        icon=""
+        level=""
+    else
+        level=$(echo "$vol_info" | awk '{print int($2*100)}')
+        [ -z "$level" ] || level="${level}%"
+    fi
+    volume="${icon}${level}"
+}
+
+update_microphone() {
+    local muted=$(wpctl get-mute @DEFAULT_AUDIO_SOURCE@ 2>/dev/null | awk '{print $2}')
+    local level=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@ 2>/dev/null | awk -F'[ ()]' '{print int($2*100)}')
+    local icon=""
+    [ "$muted" = "yes" ] && icon=""
+    [ -n "$level" ] && level="${level}%"
+    microphone="${icon}${level}"
+}
+
+update_brightness() {
+    local icon=""
+    local max=$(cat /sys/class/backlight/*/max_brightness 2>/dev/null | head -1)
+    local curr=$(cat /sys/class/backlight/*/brightness 2>/dev/null | head -1)
+    local level=$((curr * 100 / max)) 2>/dev/null
+    case "$level" in
+        [0-9]) icon="" ;;
+        1[0-9]) icon="" ;;
+        2[0-9]|3[0-9]) icon="" ;;
+        4[0-9]) icon="" ;;
+        5[0-9]) icon="" ;;
+        6[0-9]) icon="" ;;
+        7[0-9]) icon="" ;;
+        8[0-9]) icon="" ;;
+        9[0-9]) icon="" ;;
+        100) icon="" ;;
+    esac
+    [ -n "$level" ] && level="${level}%"
+    brightness="${icon}${level}"
+}
+
+update_ethernet() {
+    local status="$(cat /sys/class/net/e*/operstate 2>/dev/null | head -1)"
+    local icon="󰛳"
+    [ "$status" != "up" ] && icon=""
+    ethernet="$icon"
+}
+
+update_wifi() {
+    local status="$(cat /sys/class/net/w*/operstate 2>/dev/null | head -1)"
+    local level="$(awk '/^\s*w/ {print int($3 * 100 / 70)"%"}' /proc/net/wireless 2>/dev/null)"
+    [ "$status" = "up" ] && icon="󰖩" || icon="󰖪" level=""
+    wifi="${icon}${level}"
+}
+
+update_temperature() {
+    local icon=""
+    local THERMEL="/sys/class/thermal/thermal_zone0/temp"
+    local value="$(sed 's/000$//' "$THERMEL" 2>/dev/null)"
+    [ -z "$value" ] && icon="󱔱" temperature=""
+    case "$value" in
+        [0-3][0-9]) icon="" ;;
+        4[0-9]) icon="" ;;
+        [5-6][0-9]) icon="" ;;
+        [7-9][0-9]) icon="" ;;
+    esac
+    [ -z "$value" ] || value="${value}℃"
+    temperature="${icon}${value}"
+}
+
+update_cpu() {
+    local cpu_line
+    local prev_total prev_idle total idle cpu_usage
+    cpu_line=$(grep 'cpu ' /proc/stat)
+    total=$(echo "$cpu_line" | awk '{sum=0; for(i=2;i<=NF;i++) sum+=$i; print sum}')
+    idle=$(echo "$cpu_line" | awk '{print $5}')
+    sleep 0.1
+    cpu_line=$(grep 'cpu ' /proc/stat)
+    local new_total=$(echo "$cpu_line" | awk '{sum=0; for(i=2;i<=NF;i++) sum+=$i; print sum}')
+    local new_idle=$(echo "$cpu_line" | awk '{print $5}')
+    local diff_total=$((new_total - total))
+    local diff_idle=$((new_idle - idle))
+    if [ "$diff_total" -gt 0 ]; then
+        cpu_usage=$((100 - (diff_idle * 100 / diff_total)))
+    else
+        cpu_usage=0
+    fi
+    local icon=""
+    cpu="${icon}${cpu_usage}%"
+}
+
+update_memory() {
+    local mem_total mem_free mem_available mem_used mem_usage
+    mem_total=$(grep 'MemTotal:' /proc/meminfo | awk '{print $2}')
+    mem_free=$(grep 'MemFree:' /proc/meminfo | awk '{print $2}')
+    mem_available=$(grep 'MemAvailable:' /proc/meminfo 2>/dev/null | awk '{print $2}')
+    if [ -n "$mem_available" ]; then
+        mem_used=$((mem_total - mem_available))
+    else
+        local buffers=$(grep 'Buffers:' /proc/meminfo | awk '{print $2}')
+        local cached=$(grep '^Cached:' /proc/meminfo | awk '{print $2}')
+        mem_used=$((mem_total - mem_free - buffers - cached))
+    fi
+    if [ "$mem_total" -gt 0 ]; then
+        mem_usage=$((mem_used * 100 / mem_total))
+    else
+        mem_usage=0
+    fi
+    local icon=""
+    memory="${icon}${mem_usage}%"
+}
+
+update_ttylogin() {
+    local count="$(w -h 2>/dev/null | wc -l )"
+    local icon=""
+    [ "$count" -gt 1 ] && icon=""
+    ttylogin="${icon}${count}"
+}
+
+# modules that don't update on their own need to be run at the start for getting their initial value
+update_volume; update_microphone; update_brightness
+
+display () {
+    local space=" "
+    local delimiter_home="["
+    local delimiter_end="]"
+    local separator="]["
+    printf "%s" "${delimiter_home}${wifi}${space}${ethernet}${separator}${brightness}${space}${microphone}${space}${volume}${separator}${battery}${space}${bluetooth}${separator}${cpu}${space}${temperature}${space}${memory}${separator}${ttylogin}${separator}${time}${delimiter_end}"
+}
+
+# SIGNALING
+# trap	"<function>;display"		"RTMIN+n"
+# to update it from external commands
+# kill -m "$(cat ${XDG_RUNTIME_DIR}/damblocks.pid)"
+# where m = 34 + n
+trap	"update_bluetooth;display"	"RTMIN"     # -34
+trap	"update_battery;display"  	"RTMIN+1"
+trap	"update_volume;display"	  	"RTMIN+2"   # -36 
+trap	"update_microphone;display"	"RTMIN+3"   # -37 
+trap	"update_brightness;display"	"RTMIN+4"   # -38 
+
+while true
+do
+	sleep 1 & wait && {
+		# to update item ever n seconds with a offset of m
+		## [ $((sec % n)) -eq m ] && udpate_item
+		[ $((sec % 10)) -eq 0 ] && update_time 	# update time every 5 seconds
+		[ $((sec % 10)) -eq 0 ] && update_battery
+		[ $((sec % 10)) -eq 0 ] && update_bluetooth
+		[ $((sec % 10)) -eq 0 ] && update_ethernet
+		[ $((sec % 10)) -eq 0 ] && update_wifi
+		[ $((sec % 10)) -eq 0 ] && update_temperature
+		[ $((sec % 8)) -eq 0 ] && update_cpu
+		[ $((sec % 8)) -eq 0 ] && update_memory
+		[ $((sec % 60)) -eq 0 ] && update_ttylogin
+
+		# how often the display updates ( 5 seconds )
+		[ $((sec % 7 )) -eq 0 ] && display
+
+		sec=$((sec + 1))
+	}
+done
+

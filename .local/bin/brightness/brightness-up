@@ -1,0 +1,9 @@
+#!/bin/sh
+AMD_MAX=$(cat /sys/class/backlight/amdgpu_bl1/max_brightness)
+AMD_CURR=$(cat /sys/class/backlight/amdgpu_bl1/brightness)
+AMD_NEW=$((AMD_CURR + AMD_MAX*1/100))
+[ "$AMD_NEW" -gt "$AMD_MAX" ] && AMD_NEW=$AMD_MAX
+echo $AMD_NEW | sudo tee /sys/class/backlight/amdgpu_bl1/brightness >/dev/null
+
+DAMBLO_PID=$(cat "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/damblocks.pid" 2>/dev/null) && \
+kill -38 "$DAMBLO_PID" 2>/dev/null
