@@ -17,6 +17,7 @@ export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 
 # I need chinese
+export FC_LANG=en-US:zh-CN
 export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:en_US
 
