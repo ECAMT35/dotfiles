@@ -1,0 +1,46 @@
+
+#!/bin/sh
+
+interrupt_shutdown() {
+    echo -e "\n   Shutdown Abort. System continues."
+    exit 0
+}
+
+trap interrupt_shutdown SIGINT
+
+read -p "Shut down system? (y/Others): " user_choice
+user_choice=$(echo "$user_choice" | tr '[:upper:]' '[:lower:]')
+
+if [ "$user_choice" = "y" ]; then
+
+    echo -e "\n "
+    
+    for i in 3 2 1; do
+        echo -e "   Shutdown confirmed!  "
+        sleep 0.1
+    done
+
+    echo -e "\n   Power off in 3s... Press Ctrl+C to cancel."
+
+    for i in 3 2 1; do
+        echo -ne "  Remaining: $i seconds\r"
+        sleep 1
+    done
+
+    echo -e "\n "
+    echo -e "   Executing shutdown...\n"
+
+
+    echo -e "  ___                  ___              "
+    echo -e " | _ )  _  _   ___    | _ )  _  _   ___ "
+    echo -e " | _ \ | || | / -_)   | _ \ | || | / -_)"
+    echo -e " |___/  \_, | \___|   |___/  \_, | \___|"
+    echo -e "        |__/                 |__/       "
+
+
+    sleep 0.5
+    shutdown -h now
+else
+    echo -e "   Shutdown cancelled."
+fi
+

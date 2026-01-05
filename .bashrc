@@ -26,3 +26,6 @@ export EDITOR=nvim
 # bash history
 export HISTCONTROL="erasedups:ignorespace"
 
+#  alias for Shutdown
+alias p="$HOME/.local/bin/shutdown"
+
