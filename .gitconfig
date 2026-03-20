@@ -1,0 +1,7 @@
+[core]
+	quotepath = false
+[user]
+	email = ecamt@outlook.com
+	name = ECAMT35
+[diff]
+	tool = nvimdiff
