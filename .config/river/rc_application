@@ -16,6 +16,6 @@ riverctl map normal Super+Shift F11 spawn 'grim -g "`slurp`" -l 9 ~/Pictures/Scr
 
 riverctl map normal Control Semicolon spawn "cliphist list | wofi -d | cliphist decode | wl-copy" 
 
-riverctl map normal Control+Shift Semicolon spawn "cliphist wipe" 
+riverctl map normal Control+Shift+Alt Semicolon spawn "cliphist wipe" 
 
 
