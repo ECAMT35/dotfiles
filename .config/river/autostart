@@ -22,3 +22,6 @@ fcitx5 -d
 pkill -f "wl-paste --watch cliphist store" 2>/dev/null
 wl-paste --watch cliphist store &
 
+pkill -x fnott 2>/dev/null
+fnott >/dev/null 2>&1 &
+
