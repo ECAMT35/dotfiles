@@ -12,7 +12,7 @@ alias grep='grep --color=auto'
 PS1=" \[\e[38;5;87m\]\u\[\e[38;5;87m\]@\[\e[38;5;87m\]\h \[\e[38;5;39m\]\w \[\033[0m\]$ "
 
 # fcitx
-export GTK_IM_MODULE=fcitx
+#export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 
