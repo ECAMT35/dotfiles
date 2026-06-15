@@ -10,7 +10,7 @@ riverctl map normal Alt A spawn "wofi --show drun"
 
 riverctl map normal Super+Shift L spawn swaylock
 
-riverctl map normal Super+Shift P spawn 'grim -g "`slurp`" - | wl-copy'
+riverctl map normal Super+Shift P spawn 'grim -g "$(slurp)" - | swappy -f -'
 
 riverctl map normal Super+Shift F11 spawn 'grim -g "`slurp`" -l 9 ~/Pictures/Screenshot/`date +"%Y%m%d%H%M%S"`.png'
 
