@@ -1,0 +1,24 @@
+profile dual {
+    output HDMI-A-1 {
+        enable
+        mode 3840x2160@160.000000
+        scale 2
+        position 1638,0
+    }
+
+    output eDP-1 {
+        enable
+        mode 2560x1600@240.000000
+        scale 1.5
+        position 3558,0
+    }
+}
+
+profile laptop {
+    output eDP-1 {
+        enable
+        mode 2560x1600@240.000000
+        scale 1.5
+        position 0,0
+    }
+}
