@@ -4,7 +4,8 @@
 pkill -x dam 2>/dev/null
 ${HOME}/.config/dam/init | dam >/dev/null 2>&1 &
 
-wlr-randr --output "$(wlr-randr | head -n1 | cut -d' ' -f1)" --scale 1.5
+#wlr-randr --output "$(wlr-randr | head -n1 | cut -d' ' -f1)" --scale 1.5
+kanshi &
 
 pkill -x swaybg 2>/dev/null
 swaybg -i "$HOME/Pictures/Wallpaper/desktop.png" -m fill >/dev/null 2>&1 &
