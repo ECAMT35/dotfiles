@@ -5,3 +5,7 @@ on   = [ "g", "m" ]
 run  = "tab_create /mnt/data"
 desc = "Go /mnt/data"
 
+[[mgr.prepend_keymap]]
+on   = [ "M" ]
+run  = "plugin mount"
+desc = "Mount manager"
