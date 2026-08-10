@@ -10,6 +10,7 @@ kanshi &
 pkill -x swaybg 2>/dev/null
 swaybg -i "$HOME/Pictures/Wallpaper/desktop.png" -m fill >/dev/null 2>&1 &
 
+wayland-pipewire-idle-inhibit &
 pkill -x swayidle 2>/dev/null
 swayidle -w \
     timeout 600 'swaylock -f' \
