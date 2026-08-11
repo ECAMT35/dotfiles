@@ -5,12 +5,14 @@ pkill -x dam 2>/dev/null
 ${HOME}/.config/dam/init | dam >/dev/null 2>&1 &
 
 #wlr-randr --output "$(wlr-randr | head -n1 | cut -d' ' -f1)" --scale 1.5
-kanshi &
+kanshi >/dev/null 2>&1 &
 
 pkill -x swaybg 2>/dev/null
 swaybg -i "$HOME/Pictures/Wallpaper/desktop.png" -m fill >/dev/null 2>&1 &
 
-wayland-pipewire-idle-inhibit &
+pkill -x wayland-pipewire-idle-inhibit 2>/dev/null
+wayland-pipewire-idle-inhibit >/dev/null 2>&1 &
+
 pkill -x swayidle 2>/dev/null
 swayidle -w \
     timeout 600 'swaylock -f' \
@@ -19,10 +21,10 @@ swayidle -w \
     before-sleep 'swaylock -f -c 000000' >/dev/null 2>&1 &
 
 pkill -x fcitx5 2>/dev/null
-fcitx5 -d
+fcitx5 -d >/dev/null 2>&1 &
 
 pkill -f "wl-paste --watch cliphist store" 2>/dev/null
-wl-paste --watch cliphist store &
+wl-paste --watch cliphist store >/dev/null 2>&1 &
 
 pkill -x fnott 2>/dev/null
 fnott >/dev/null 2>&1 &
