@@ -1,58 +1,107 @@
-@define-color bg rgba(210,210,210,0.99);
-@define-color input_bg #f2f2f2;
-@define-color entry_bg #8c8c8c;
-@define-color text_color #000000;
+@define-color bg rgba(229,230,235,0.97);
+@define-color input_bg #ffffff;
+@define-color border #cdd2db;
+@define-color entry_hover #dfe2e8;
+@define-color accent #3584e4;
+@define-color accent_hover #1c71d8;
+@define-color text_color #33363d;
+@define-color text_muted #737a85;
 
 * {
   background: transparent;
+  font-family: "Noto Sans CJK SC", "Noto Sans", sans-serif;
 }
 
 #window {
   background: @bg;
-  padding: 10px;
-  border-radius: 8px;
-  animation: slideIn 0.3s ease-in-out both;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid @border;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+  animation: slideIn 0.25s ease-in-out both;
 }
 
 #input {
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  border-radius: 10px;
   background-color: @input_bg;
+  border: 1px solid @border;
+  color: @text_color;
+  caret-color: @accent;
+  font-size: 14px;
+}
+
+#input:focus {
+  border-color: @accent;
+  box-shadow: 0 0 0 2px rgba(53,132,228,0.18);
 }
 
 #outer-box {
-  padding: 20px;
+  padding: 14px;
 }
 
 #img {
-  margin-right: 6px;
+  margin-right: 10px;
+  border-radius: 6px;
 }
 
+#scrollbar {
+  width: 6px;
+  margin: 4px 2px;
+}
+
+#scrollbar slider {
+  background: @border;
+  border-radius: 3px;
+  min-width: 6px;
+  min-height: 30px;
+}
 
 #entry {
-  padding: 10px;
-  border-radius: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  transition: background-color 0.12s ease;
+}
+
+#entry:hover {
+  background-color: @entry_hover;
 }
 
 #entry:selected {
-  background-color: @entry_bg;
+  background-color: @accent;
 }
 
 #entry:selected #text {
-  color: @bg;
+  color: #ffffff;
 }
 
 #text {
   margin: 2px;
-  color: @text_color
+  color: @text_color;
+  font-size: 14px;
+}
+
+#entry:selected #text:name {
+  color: #ffffff;
+}
+
+#entry:selected #text:desc {
+  color: rgba(255,255,255,0.85);
+}
+
+#text:desc {
+  color: @text_muted;
+  font-size: 12px;
 }
 
 @keyframes slideIn {
   0% {
     opacity: 0;
+    transform: translateY(-8px);
   }
   100% {
     opacity: 1;
+    transform: translateY(0);
   }
- }
+}
