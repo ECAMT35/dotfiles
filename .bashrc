@@ -26,6 +26,8 @@ export EDITOR=nvim
 # bash history
 export HISTCONTROL="erasedups:ignorespace"
 
-#  alias for Shutdown
+# alias for Shutdown
 alias p="$HOME/.local/bin/shutdown"
 
+# npm
+export PATH="$HOME/.local/bin:$HOME/.local/share/npm/bin:$PATH"
