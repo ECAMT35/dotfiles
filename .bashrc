@@ -24,10 +24,10 @@ export LANGUAGE=zh_CN:en_US
 export EDITOR=nvim
 
 # bash history
-export HISTCONTROL="erasedups:ignorespace"
+export HISTCONTROL=ignoreboth
 
 # alias for Shutdown
 alias p="$HOME/.local/bin/shutdown"
 
-# npm
-export PATH="$HOME/.local/bin:$HOME/.local/share/npm/bin:$PATH"
+# npm, pnpm
+export PATH="$HOME/.local/bin:$HOME/.local/share/npm/bin:$HOME/.local/share/pnpm/bin:$PATH"
