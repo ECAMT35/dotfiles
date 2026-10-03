@@ -1,46 +1,34 @@
+#!/bin/bash
+set -e
 
-#!/bin/sh
+icon_cross=$'\uf00d'
+icon_power=$'\uf011'
+icon_clock=$'\uf017'
+icon_dot=$'\uf111'
+icon_moon=$'\uf186'
+icon_check=$'\uf00c'
 
 interrupt_shutdown() {
-    echo -e "\n   Shutdown Abort. System continues."
+    printf "\n  %s  已取消关机，系统继续运行。\n" "$icon_cross"
     exit 0
 }
 
 trap interrupt_shutdown SIGINT
 
-read -p "Shut down system? (y/Others): " user_choice
+read -r -p "  $icon_power  确定关机吗？(y/其他): " user_choice
 user_choice=$(echo "$user_choice" | tr '[:upper:]' '[:lower:]')
 
 if [ "$user_choice" = "y" ]; then
-
-    echo -e "\n "
-    
-    for i in 3 2 1; do
-        echo -e "   Shutdown confirmed!  "
-        sleep 0.1
-    done
-
-    echo -e "\n   Power off in 3s... Press Ctrl+C to cancel."
+    printf "\n  %s  3 秒后关机，按 Ctrl+C 取消...\n\n" "$icon_clock"
 
     for i in 3 2 1; do
-        echo -ne "  Remaining: $i seconds\r"
+        printf "  %s  %d...\r" "$icon_dot" "$i"
         sleep 1
     done
 
-    echo -e "\n "
-    echo -e "   Executing shutdown...\n"
-
-
-    echo -e "  ___                  ___              "
-    echo -e " | _ )  _  _   ___    | _ )  _  _   ___ "
-    echo -e " | _ \ | || | / -_)   | _ \ | || | / -_)"
-    echo -e " |___/  \_, | \___|   |___/  \_, | \___|"
-    echo -e "        |__/                 |__/       "
-
-
-    sleep 0.5
-    shutdown -h now
+    printf "\n\n  %s  晚安 Master。\n" "$icon_moon"
+    sleep 0.8
+    /sbin/shutdown -h now
 else
-    echo -e "   Shutdown cancelled."
+    printf "\n  %s  已取消。\n" "$icon_check"
 fi
-
