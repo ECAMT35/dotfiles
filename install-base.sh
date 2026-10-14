@@ -25,6 +25,7 @@ fi
 packages=(
   # 基础命令行与常用工具
   bash
+  less
   neovim
   aria2
   yazi
@@ -48,7 +49,8 @@ packages=(
   fnott
 
   # 输入法、剪贴板与截图
-  fcitx5
+  fcitx5-im
+  fcitx5-chinese-addons
   wl-clipboard
   cliphist
   grim
