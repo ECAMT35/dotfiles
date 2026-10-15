@@ -36,6 +36,7 @@ packages=(
   blueman
 
   # Wayland 桌面与显示管理
+  river-classic
   kanshi
   wlr-randr
   swaylock
