@@ -30,6 +30,8 @@ packages=(
   aria2
   yazi
   smartmontools
+  7zip
+  unrar
 
   # 网络与蓝牙
   networkmanager
