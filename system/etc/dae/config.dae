@@ -12,6 +12,12 @@ subscription {
     subName: 'https://your-real-subscription-link'
 }
 
+node {
+    US: ''
+    HK: ''
+    SG: ''
+}
+
 dns {
     upstream {
         googledns: 'tcp+udp://dns.google.com:53'
@@ -32,6 +38,7 @@ dns {
 
 group {
     proxy {
+    	#filter: name(US,HK)
         filter: subtag(subName)
         policy: min_avg10
     }
@@ -47,6 +54,5 @@ routing {
     pname(aria2c) && dport(80, 443) && l4proto(tcp) -> proxy
     pname(aria2c) -> direct
 
-    l4proto(udp) && dport(443) -> block
     fallback: proxy
 }
